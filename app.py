@@ -9,7 +9,8 @@ st.title("学籍番号 → 氏名照合システム")
 # 名簿CSVの読み込み
 @st.cache_data
 def load_data():
-    df = pd.read_csv("meibo.csv", dtype={"id": str})
+    df = pd.read_csv("meibo.csv", dtype={"id": str}, encoding="cp932")
+#    df = pd.read_csv("meibo.csv", dtype={"id": str}, encoding="cp932")
     return df
 
 df = load_data()
@@ -20,7 +21,7 @@ student_id = st.text_input("学籍番号を入力してください", max_chars=
 # attendance.csv が存在する場合だけ読み込む関数
 def load_attendance():
     if os.path.exists("attendance.csv"):
-        return pd.read_csv("attendance.csv", encoding="utf-8", names=["id", "name", "time"])
+        return pd.read_csv("attendance.csv", encoding="cp932", names=["id", "name", "time"])
     else:
         return pd.DataFrame(columns=["id", "name", "time"])
 
@@ -42,7 +43,8 @@ if student_id:
         attendance_df = load_attendance()
 
         # ダウンロードボタン
-        csv = attendance_df.to_csv(index=False, encoding="utf-8-sig")
+#       csv = attendance_df.to_csv(index=False, encoding="utf-8-sig")
+        csv = attendance_df.to_csv(index=False, encoding="cp932")
         st.download_button(
             label="出欠データをダウンロード（attendance.csv）",
             data=csv,
