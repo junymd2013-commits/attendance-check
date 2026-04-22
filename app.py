@@ -8,8 +8,8 @@ st.title("学籍番号 → 氏名照合システム")
 @st.cache_data
 def load_data():
 # ← ここを修正（encoding="cp932"）
-#    df = pd.read_csv("meibo.csv", dtype={"id": str}, encoding="cp932")
-    df = pd.read_csv("meibo_1.csv", dtype={"id": str}, encoding="utf-8")
+     df = pd.read_csv("meibo_1.csv", dtype={"id": str}, encoding="cp932")
+#    df = pd.read_csv("meibo_1.csv", dtype={"id": str}, encoding="utf-8")
 
 #    df = pd.read_csv("meibo.csv", dtype={"id": str})
     return df
