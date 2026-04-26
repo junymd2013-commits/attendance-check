@@ -11,7 +11,7 @@ st.title("学籍番号 → 氏名照合システム")
 # 名簿CSVの読み込み（UTF-8 のままでOK）
 @st.cache_data
 def load_data():
-    df = pd.read_csv("meibo_1.csv", dtype={"id": str}, encoding="utf-8")
+    df = pd.read_csv("meibo_1.csv", dtype={"id": str}, encoding="cp932")
     return df
 
 df = load_data()
