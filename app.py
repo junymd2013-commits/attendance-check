@@ -10,7 +10,6 @@ st.title("学籍番号 → 氏名照合システム")
 @st.cache_data
 def load_data():
     df = pd.read_csv("meibo.csv", dtype={"id": str}, encoding="cp932")
-#    df = pd.read_csv("meibo.csv", dtype={"id": str}, encoding="cp932")
     return df
 
 df = load_data()
@@ -35,15 +34,14 @@ if student_id:
         # 出席ボタン
         if st.button("出席する"):
             now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            with open("attendance.csv", "a", encoding="utf-8") as f:
+            with open("attendance.csv", "a", encoding="cp932") as f:
                 f.write(f"{student_id},{name},{now}\n")
             st.info("出席を記録しました")
 
         # 出席データの読み込み
         attendance_df = load_attendance()
 
-        # ダウンロードボタン
-#       csv = attendance_df.to_csv(index=False, encoding="utf-8-sig")
+        # ダウンロードボタン（Shift-JISで出力）
         csv = attendance_df.to_csv(index=False, encoding="cp932")
         st.download_button(
             label="出欠データをダウンロード（attendance.csv）",
