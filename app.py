@@ -1,3 +1,5 @@
+#出席確認プログラム
+
 import streamlit as st
 import pandas as pd
 import datetime
@@ -6,10 +8,10 @@ import os
 # タイトル
 st.title("学籍番号 → 氏名照合システム")
 
-# 名簿CSVの読み込み
+# 名簿CSVの読み込み（UTF-8 のままでOK）
 @st.cache_data
 def load_data():
-    df = pd.read_csv("meibo.csv", dtype={"id": str}, encoding="cp932")
+    df = pd.read_csv("meibo.csv", dtype={"id": str}, encoding="utf-8")
     return df
 
 df = load_data()
@@ -34,6 +36,7 @@ if student_id:
         # 出席ボタン
         if st.button("出席する"):
             now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            # ★ Shift-JIS（cp932）で書き込み
             with open("attendance.csv", "a", encoding="cp932") as f:
                 f.write(f"{student_id},{name},{now}\n")
             st.info("出席を記録しました")
@@ -41,8 +44,10 @@ if student_id:
         # 出席データの読み込み
         attendance_df = load_attendance()
 
-        # ダウンロードボタン（Shift-JISで出力）
-        csv = attendance_df.to_csv(index=False, encoding="cp932")
+        # ★ ダウンロード用CSV（BOM付き Shift-JIS）
+        csv = attendance_df.to_csv(index=False, encoding="cp932", errors="ignore")
+        csv = "\ufeff" + csv  # ← Excel が文字化けしないための BOM 付与
+
         st.download_button(
             label="出欠データをダウンロード（attendance.csv）",
             data=csv,
@@ -52,3 +57,6 @@ if student_id:
 
     else:
         st.error("学籍番号が見つかりません")
+
+
+学籍番号が見つかりません")
